@@ -1,0 +1,19 @@
+{
+  "name": "pm-html-to-json",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "ts-node src/main.ts",
+    "build": "rm -r dist && tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "prosemirror-model": "1.13.3",
+    "jsdom": "^16.5.2"
+  },
+  "devDependencies": {
+    "@types/prosemirror-model": "1.13.0",
+    "@types/jsdom": "16.2.9",
+    "ts-node": "9.1.1",
+    "typescript": "4.2.3",
+    "prettier": "^2.2.1"
+  }
+}
