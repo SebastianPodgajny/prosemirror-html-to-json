@@ -14,7 +14,7 @@ const buildSchema = <N extends NodeName, M extends MarkName>(
   return new Schema(config);
 };
 
-export const DEFAULT_SCHEMA = buildSchema(
+const DEFAULT_SCHEMA = buildSchema(
   [
     NodeName.Doc,
     NodeName.Paragraph,
@@ -27,3 +27,11 @@ export const DEFAULT_SCHEMA = buildSchema(
   ],
   [MarkName.Strong, MarkName.Em, MarkName.Strikethrough, MarkName.Underline, MarkName.Link],
 );
+
+export enum RtSchema {
+  Default,
+}
+
+export const SchemasMap = {
+  [RtSchema.Default]: DEFAULT_SCHEMA,
+};
