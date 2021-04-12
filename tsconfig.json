@@ -4,7 +4,8 @@
     "target": "es6",
     "sourceMap": true,
     "outDir": "dist",
-    "lib": ["dom", "es2019"]
+    "lib": ["dom", "es2019"],
+    "declaration": true
   },
   "exclude": [
     "node_modules"
