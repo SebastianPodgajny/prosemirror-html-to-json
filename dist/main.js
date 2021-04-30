@@ -2,17 +2,76 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 9661:
-/***/ ((module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+/***/ 76554:
+/***/ ((module, exports, __webpack_require__) => {
 
 
-// UNUSED EXPORTS: stringToJson
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.stringToJson = void 0;
+const jsdom_1 = __webpack_require__(38868);
+const prosemirror_model_1 = __webpack_require__(38638);
+const schemas_1 = __webpack_require__(51683);
+const stringToJson = (html, rtSchema) => {
+    const dom = jsdom_1.JSDOM.fragment(html);
+    const schema = schemas_1.SchemasMap[rtSchema];
+    const pmDoc = prosemirror_model_1.DOMParser.fromSchema(schema).parse(dom.firstChild);
+    return pmDoc.toJSON();
+};
+exports.stringToJson = stringToJson;
+module.exports = {
+    stringToJson: exports.stringToJson,
+};
+//# sourceMappingURL=main.js.map
 
-// EXTERNAL MODULE: ./node_modules/jsdom/lib/api.js
-var api = __webpack_require__(38868);
-// EXTERNAL MODULE: ./node_modules/prosemirror-model/dist/index.es.js + 1 modules
-var index_es = __webpack_require__(38638);
-;// CONCATENATED MODULE: ./out-tsc/schema/nodes.js
+/***/ }),
+
+/***/ 64178:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SCHEMA_MARK = exports.MarkName = void 0;
+var MarkName;
+(function (MarkName) {
+    MarkName["Strong"] = "strong";
+    MarkName["Em"] = "em";
+    MarkName["Strikethrough"] = "strikethrough";
+    MarkName["Underline"] = "underline";
+    MarkName["Link"] = "link";
+})(MarkName = exports.MarkName || (exports.MarkName = {}));
+exports.SCHEMA_MARK = {
+    [MarkName.Strong]: {
+        parseDOM: [{ tag: 'strong' }, { tag: 'b' }, { style: 'font-weight' }],
+    },
+    [MarkName.Em]: {
+        parseDOM: [{ tag: 'i' }, { tag: 'em' }, { style: 'font-style=italic' }],
+    },
+    [MarkName.Strikethrough]: {
+        parseDOM: [{ tag: 's' }, { tag: 'strikethrough' }, { style: 'text-decoration=line-through' }],
+    },
+    [MarkName.Underline]: {
+        parseDOM: [{ tag: 'u' }, { tag: 'underline' }, { style: 'text-decoration=underline' }],
+    },
+    [MarkName.Link]: {
+        attrs: {
+            href: {},
+            title: { default: null },
+            target: { default: null },
+        },
+        inclusive: false,
+        parseDOM: [{ tag: 'a[href]' }],
+    },
+};
+//# sourceMappingURL=marks.js.map
+
+/***/ }),
+
+/***/ 74232:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SCHEMA_NODE = exports.NodeName = void 0;
 var NodeName;
 (function (NodeName) {
     NodeName["Doc"] = "doc";
@@ -23,8 +82,8 @@ var NodeName;
     NodeName["BulletList"] = "bullet_list";
     NodeName["ListItem"] = "list_item";
     NodeName["Mention"] = "mention";
-})(NodeName || (NodeName = {}));
-const SCHEMA_NODE = {
+})(NodeName = exports.NodeName || (exports.NodeName = {}));
+exports.SCHEMA_NODE = {
     [NodeName.Doc]: { content: 'block+' },
     [NodeName.Text]: { group: 'inline' },
     [NodeName.Paragraph]: { content: 'inline*', group: 'block', parseDOM: [{ tag: 'p' }] },
@@ -61,83 +120,43 @@ const SCHEMA_NODE = {
     },
 };
 //# sourceMappingURL=nodes.js.map
-;// CONCATENATED MODULE: ./out-tsc/schema/marks.js
-var MarkName;
-(function (MarkName) {
-    MarkName["Strong"] = "strong";
-    MarkName["Em"] = "em";
-    MarkName["Strikethrough"] = "strikethrough";
-    MarkName["Underline"] = "underline";
-    MarkName["Link"] = "link";
-})(MarkName || (MarkName = {}));
-const SCHEMA_MARK = {
-    [MarkName.Strong]: {
-        parseDOM: [{ tag: 'strong' }, { tag: 'b' }, { style: 'font-weight' }],
-    },
-    [MarkName.Em]: {
-        parseDOM: [{ tag: 'i' }, { tag: 'em' }, { style: 'font-style=italic' }],
-    },
-    [MarkName.Strikethrough]: {
-        parseDOM: [{ tag: 's' }, { tag: 'strikethrough' }, { style: 'text-decoration=line-through' }],
-    },
-    [MarkName.Underline]: {
-        parseDOM: [{ tag: 'u' }, { tag: 'underline' }, { style: 'text-decoration=underline' }],
-    },
-    [MarkName.Link]: {
-        attrs: {
-            href: {},
-            title: { default: null },
-            target: { default: null },
-        },
-        inclusive: false,
-        parseDOM: [{ tag: 'a[href]' }],
-    },
-};
-//# sourceMappingURL=marks.js.map
-;// CONCATENATED MODULE: ./out-tsc/schema/schemas.js
+
+/***/ }),
+
+/***/ 51683:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SchemasMap = exports.RtSchema = void 0;
+const nodes_1 = __webpack_require__(74232);
+const marks_1 = __webpack_require__(64178);
+const prosemirror_model_1 = __webpack_require__(38638);
 const buildSchema = (nodes, marks) => {
     const config = {
-        nodes: Object.fromEntries(nodes.map(name => [name, SCHEMA_NODE[name]])),
-        marks: Object.fromEntries(marks.map(name => [name, SCHEMA_MARK[name]])),
+        nodes: Object.fromEntries(nodes.map(name => [name, nodes_1.SCHEMA_NODE[name]])),
+        marks: Object.fromEntries(marks.map(name => [name, marks_1.SCHEMA_MARK[name]])),
     };
-    return new index_es/* Schema */.V_(config);
+    return new prosemirror_model_1.Schema(config);
 };
 const DEFAULT_SCHEMA = buildSchema([
-    NodeName.Doc,
-    NodeName.Paragraph,
-    NodeName.Text,
-    NodeName.HardBreak,
-    NodeName.OrderedList,
-    NodeName.BulletList,
-    NodeName.ListItem,
-    NodeName.Mention,
-], [MarkName.Strong, MarkName.Em, MarkName.Strikethrough, MarkName.Underline, MarkName.Link]);
+    nodes_1.NodeName.Doc,
+    nodes_1.NodeName.Paragraph,
+    nodes_1.NodeName.Text,
+    nodes_1.NodeName.HardBreak,
+    nodes_1.NodeName.OrderedList,
+    nodes_1.NodeName.BulletList,
+    nodes_1.NodeName.ListItem,
+    nodes_1.NodeName.Mention,
+], [marks_1.MarkName.Strong, marks_1.MarkName.Em, marks_1.MarkName.Strikethrough, marks_1.MarkName.Underline, marks_1.MarkName.Link]);
 var RtSchema;
 (function (RtSchema) {
     RtSchema[RtSchema["Default"] = 0] = "Default";
-})(RtSchema || (RtSchema = {}));
-const SchemasMap = {
+})(RtSchema = exports.RtSchema || (exports.RtSchema = {}));
+exports.SchemasMap = {
     [RtSchema.Default]: DEFAULT_SCHEMA,
 };
 //# sourceMappingURL=schemas.js.map
-;// CONCATENATED MODULE: ./out-tsc/main.js
-/* module decorator */ module = __webpack_require__.hmd(module);
-
-
-
-const stringToJson = (html, rtSchema) => {
-    const dom = api.JSDOM.fragment(html);
-    const schema = SchemasMap[rtSchema];
-    const pmDoc = index_es/* DOMParser.fromSchema */.aw.fromSchema(schema).parse(dom.firstChild);
-    return pmDoc.toJSON();
-};
-module.exports = {
-    stringToJson,
-};
-//# sourceMappingURL=main.js.map
 
 /***/ }),
 
@@ -319,7 +338,7 @@ module.exports = require("zlib");;
 /******/ 	// the startup function
 /******/ 	__webpack_require__.x = () => {
 /******/ 		// Load entry module and return exports
-/******/ 		var __webpack_exports__ = __webpack_require__.O(undefined, [216], () => (__webpack_require__(9661)))
+/******/ 		var __webpack_exports__ = __webpack_require__.O(undefined, [216], () => (__webpack_require__(76554)))
 /******/ 		__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 		return __webpack_exports__;
 /******/ 	};
@@ -387,21 +406,6 @@ module.exports = require("zlib");;
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
 /******/ 			return "" + "vendors" + ".js";
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/harmony module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.hmd = (module) => {
-/******/ 			module = Object.create(module);
-/******/ 			if (!module.children) module.children = [];
-/******/ 			Object.defineProperty(module, 'exports', {
-/******/ 				enumerable: true,
-/******/ 				set: () => {
-/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
-/******/ 				}
-/******/ 			});
-/******/ 			return module;
 /******/ 		};
 /******/ 	})();
 /******/ 	

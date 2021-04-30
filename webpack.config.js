@@ -27,5 +27,5 @@ module.exports = {
       },
     ],
   },
-  target: 'node12'
+  target: 'node10'
 };
