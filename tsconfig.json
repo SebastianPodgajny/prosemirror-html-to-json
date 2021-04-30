@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
+    "module": "es2020",
+    "target": "es2019",
+    "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "./out-tsc",
     "lib": ["dom", "es2019"],
     "declaration": true
   },
